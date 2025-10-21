@@ -1,0 +1,758 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Solvd-Employee-Leave-Management",
+        "description": "This is an Api Solvd-Employee-Leave-Management",
+        "version": "1.0.0",
+        "contact": {
+            "email": "macamagolf@gmail.com"
+        }
+    },
+    "paths": {
+        "/createBoss": {
+            "post": {
+                "tags": ["Boss"],
+                "summary": "Create a Boss",
+                "description": "Create a Boss",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                },
+                                "description": "Mandatory fields for create a Boss",
+                                "example": {
+                                    "name": "boss name",
+                                    "password": "boss password"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "boss_id": {
+                                            "type": "string"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "created_at": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "boss": {
+                                        "boss_id": "11264226-ebc8-4148-9f24-b0a1769c17b9",
+		                                "name": "Boss name",
+		                                "created_at": "2024-06-21T21:57:20.862Z"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Null Data is Not Allowed, Please fill in All Datas !"
+                    },
+                    "401": {
+                        "description": "The bossName already exists !"
+                    },
+                    "405": {
+                        "description": "The field's, must to be a string !"
+                    }
+                }
+            }
+        },
+        "/createToken": {
+            "post": {
+                "tags": ["Boss"],
+                "summary": "Create Token",
+                "description": "Create Boss Token",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "boss_id",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                },
+                                "description": "Mandatory fields for create a Boss Token",
+                                "example": {
+                                    "name": "boss name",
+                                    "password": "boss password"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "boss_id": {
+                                            "type": "string"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "created_at": {
+                                            "type": "string"
+                                        },
+                                        "token": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "boss": {
+                                        "boss_id": "11264226-ebc8-4148-9f24-b0a1769c17b9",
+		                                "name": "Boss name",
+		                                "created_at": "2024-06-21T21:57:20.862Z"
+                                    },
+                                    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InVzZXJfaWQiOiI3NTk3YmExZC02ODliLTQyOTMtYTc2ZS00NmU2ODRiMGQyZWMiLCJ1c2VybmFtZSI6IlNldSBNYWRydWdhIiwidXNlckF2YXRhciI6Ik1hZHJ1Z3VpyZWMiLCJ1c2VybmFtZSI6IlNldSBNYWRydWdhIiwidXNlckF2YXRhciI6Ik1hZHJ1Z3VpyZWMiLCJ1c2VybmFtZSI6IlNldSBNYWRydWdhIiwidXNlckF2YXRhciI6Ik1hZHJ1Z3VpyZWMiLCJ1c2VybmFtZSI6IlNldSBNYWRy"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Null Data is Not Allowed, Please fill in All Datas !"
+                    },
+                    "401": {
+                        "description": "Incorrect password !"
+                    },
+                    "404": {
+                        "description": "Boss_id not found, or Incorrect ! (OR) BossName not found, or Incorrect !"
+                    },
+                    "405": {
+                        "description": "The field's, must to be a string !"
+                    }
+                }
+            }
+        },
+        "/searchBoss": {
+            "get": {
+                "tags": ["Boss"],
+                "summary": "Search Boss",
+                "description": "Search Boss",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "boss_id",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "boss_id": {
+                                            "type": "string"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "created_at": {
+                                            "type": "string"
+                                            }
+                                    }
+                                },
+                                "example": {
+                                    "boss": {
+                                        "boss_id": "11264226-ebc8-4148-9f24-b0a1769c17b9",
+		                                "name": "Boss name",
+		                                "created_at": "2024-06-21T21:57:20.862Z"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description":"Boss_id not found, or Incorrect !"
+                    }
+                }
+            }
+        },
+        "/deleteBoss": {
+            "delete": {
+                "tags": ["Boss"],
+                "summary": "Delete Boss",
+                "description": "Delete Boss",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "boss_id",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Boss deleted with success !"
+                    },
+                    "404": {
+                        "description": "Boss_id not found, or Incorrect !"
+                    }
+                }
+            }
+        },
+        "/createEmployee": {
+            "post": {
+                "tags": ["Employee"],
+                "summary": "Create a Employee",
+                "description": "Create a Employee",
+                "security": [
+                    { "bearerAuth": [] }
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "boss_id",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "employeeName": {
+                                        "type": "string"
+                                    },
+                                    "jobTitle": {
+                                        "type": "string"
+                                    },
+                                    "baseSalary": {
+                                        "type": "number"
+                                    },
+                                    "startDate": {
+                                        "type": "string"
+                                    }
+                                },
+                                "description": "Mandatory fields for create a Employee",
+                                "example": {
+                                    "employeeName": "Employee name",
+                                    "jobTitle": "Employee jobTitle",
+                                    "baseSalary": 0,
+                                    "startDate": "Employee startDate"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "boss_id": {
+                                            "type": "string"
+                                        },
+                                        "employee_id": {
+                                            "type": "string"
+                                        },
+                                        "employeeName": {
+                                            "type": "string"
+                                        },
+                                        "jobTitle": {
+                                            "type": "string"
+                                        },
+                                        "baseSalary": {
+                                            "type": "number"
+                                        },
+                                        "startDate": {
+                                            "type": "string"
+                                        },
+                                        "created_at": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "employee": {
+		                                "boss_id": "0849d791-731d-4a93-9a42-c2e68cfb4e40",
+		                                "employee_id": "7976abab-9358-42ba-b017-32019b6c6024",
+		                                "employeeName": "Employee name",
+		                                "jobTitle": "Employee jobTitle",
+		                                "baseSalary": 100.00,
+		                                "startDate": "Employee startDate",
+		                                "created_at": "2024-06-25T18:15:11.022Z"
+	                                }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Null Data is Not Allowed, Please fill in All Datas !"
+                    },
+                    "401": {
+                        "description": "The employeeName already exists ! (OR) The startDate field  isn't in the rigth format mm/dd/yyyy, please change ! (OR) Invalid Token !"
+                    },
+                    "404": {
+                        "description": "Boss ID Not Found !"
+                    },
+                    "405": {
+                        "description": "The field's, must to be a string ! (OR) The baseSalary field , must to be a number int or float !"
+                    }
+                }
+            }
+        },
+        "/searchEmployee": {
+            "get": {
+                "tags": ["Employee"],
+                "summary": "Search Employee",
+                "description": "Search Employee",
+                "security": [
+                    { "bearerAuth": [] }
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "employee_id",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "boss_id": {
+                                            "type": "string"
+                                        },
+                                        "employee_id": {
+                                            "type": "string"
+                                        },
+                                        "employeeName": {
+                                            "type": "string"
+                                        },
+                                        "jobTitle": {
+                                            "type": "string"
+                                        },
+                                        "baseSalary": {
+                                            "type": "number"
+                                        },
+                                        "startDate": {
+                                            "type": "string"
+                                        },
+                                        "created_at": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "employee": {
+		                                "boss_id": "0849d791-731d-4a93-9a42-c2e68cfb4e40",
+		                                "employee_id": "7976abab-9358-42ba-b017-32019b6c6024",
+		                                "employeeName": "Employee name",
+		                                "jobTitle": "Employee jobTitle",
+		                                "baseSalary": 100.00,
+		                                "startDate": "Employee startDate",
+		                                "created_at": "2024-06-25T18:15:11.022Z"
+	                                }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid Token !"
+                    },
+                    "404": {
+                        "description": "Employee Not Found !"
+                    }
+                }
+            }
+        },
+        "/deleteEmployee": {
+            "delete": {
+                "tags": ["Employee"],
+                "summary": "Delete Employee",
+                "description": "Delete Employee",
+                "security": [
+                    { "bearerAuth": [] }
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "employee_id",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Employee deleted with success !"
+                    },
+                    "401": {
+                        "description": "Invalid Token !"
+                    },
+                    "404": {
+                        "description": "Employee Not Found !"
+                    }
+                }
+            }
+        },
+        "/calculateVacation": {
+            "post": {
+                "tags": ["Vacation"],
+                "summary": "Calculate Employee Vacation",
+                "description": "Calculate Employee Vacation",
+                "security": [
+                    { "bearerAuth": [] }
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "employee_id",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "boss_id": {
+                                            "type": "string"
+                                        },
+                                        "employee_id": {
+                                            "type": "string"
+                                        },
+                                        "employeeName": {
+                                            "type": "string"
+                                        },
+                                        "jobTitle": {
+                                            "type": "string"
+                                        },
+                                        "baseSalary": {
+                                            "type": "number"
+                                        },
+                                        "startDate": {
+                                            "type": "string"
+                                        },
+                                        "created_at": {
+                                            "type": "string"
+                                        },
+                                        "vacation": {
+                                            "qtty_paid_vacation": {
+                                                "type": "number"
+                                            },
+                                            "qtty_days_on_vacation": {
+                                                "type": "number"
+                                            },
+                                            "value_to_recieve": {
+                                                "type": "number"
+                                            },
+                                            "time_worked_amount": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "employee": {
+		                                "boss_id": "0849d791-731d-4a93-9a42-c2e68cfb4e40",
+		                                "employee_id": "7976abab-9358-42ba-b017-32019b6c6024",
+		                                "employeeName": "Employee name",
+		                                "jobTitle": "Employee jobTitle",
+		                                "baseSalary": 100.00,
+		                                "startDate": "Employee startDate",
+		                                "created_at": "2024-06-25T18:15:11.022Z",
+                                        "vacation": [
+                                            {
+					                            "qtty_paid_vacation": 0,
+					                            "qtty_days_on_vacation": 0,
+					                            "value_to_recieve": 0,
+					                            "time_worked_amount": "Time calculated based on today's date ... Working time: ? months, ? days, and ? years .."
+                                            }
+                                        ]
+	                                }
+                                }
+                            }
+                        }
+                    },
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "boss_id": {
+                                            "type": "string"
+                                        },
+                                        "employee_id": {
+                                            "type": "string"
+                                        },
+                                        "employeeName": {
+                                            "type": "string"
+                                        },
+                                        "jobTitle": {
+                                            "type": "string"
+                                        },
+                                        "baseSalary": {
+                                            "type": "number"
+                                        },
+                                        "startDate": {
+                                            "type": "string"
+                                        },
+                                        "created_at": {
+                                            "type": "string"
+                                        },
+                                        "vacation": {
+                                            "vacation_id": {
+                                                "type": "string"
+                                            },
+                                            "employee_id": {
+                                                "type": "string"
+                                            },
+                                            "employeeName": {
+                                                "type": "string"
+                                            },
+                                            "jobTitle": {
+                                                "type": "string"
+                                            },
+                                            "qtty_paid_vacation": {
+                                                "type": "number"
+                                            },
+                                            "qtty_days_on_vacation": {
+                                                "type": "number"
+                                            },
+                                            "value_to_recieve": {
+                                                "type": "number"
+                                            },
+                                            "time_worked_amount": {
+                                                "type": "string"
+                                            },
+                                            "created_at": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "employee": {
+		                                "boss_id": "0849d791-731d-4a93-9a42-c2e68cfb4e40",
+		                                "employee_id": "7976abab-9358-42ba-b017-32019b6c6024",
+		                                "employeeName": "Employee name",
+		                                "jobTitle": "Employee jobTitle",
+		                                "baseSalary": 100.00,
+		                                "startDate": "Employee startDate",
+		                                "created_at": "2024-06-25T18:15:11.022Z",
+                                        "vacation": [
+                                            {
+                                                "vacation_id": "42650385-1635-4948-998a-cdd9fe019088",
+					                            "employee_id": "7976abab-9358-42ba-b017-32019b6c6024",
+					                            "employee_name": "Employee name",
+					                            "employee_jobtitle": "Employee jobTitle",
+					                            "qtty_paid_vacation": 0,
+					                            "qtty_days_on_vacation": 0,
+					                            "value_to_recieve": 0,
+					                            "time_worked_amount": "Time calculated based on today's date ... Working time: ? months, ? days, and ? years ..",
+					                            "created_at": "2024-06-25T18:16:44.499Z"
+                                            }
+                                        ]
+	                                }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "You can only calculate 1 vacation for each employee ! (OR) Invalid Token !"
+                    },
+                    "404": {
+                        "description": "Employee Not Found !"
+                    }
+                }
+            }
+        },
+        "/searchVacation": {
+            "get": {
+                "tags": ["Vacation"],
+                "summary": "Search Employee Vacation",
+                "description": "Search Employee Vacation",
+                "security": [
+                    { "bearerAuth": [] }
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "vacation_id",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "vacation_id": {
+                                            "type": "string"
+                                        },
+                                        "employee_id": {
+                                            "type": "string"
+                                        },
+                                        "employeeName": {
+                                            "type": "string"
+                                        },
+                                        "jobTitle": {
+                                            "type": "string"
+                                        },
+                                        "qtty_paid_vacation": {
+                                            "type": "number"
+                                        },
+                                        "qtty_days_on_vacation": {
+                                            "type": "number"
+                                        },
+                                        "value_to_recieve": {
+                                            "type": "number"
+                                        },
+                                        "time_worked_amount": {
+                                            "type": "string"
+                                        },
+                                        "created_at": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "vacation": [
+                                        {
+                                            "vacation_id": "42650385-1635-4948-998a-cdd9fe019088",
+                                            "employee_id": "7976abab-9358-42ba-b017-32019b6c6024",
+                                            "employee_name": "Employee name",
+                                            "employee_jobtitle": "Employee jobTitle",
+                                            "qtty_paid_vacation": 0,
+                                            "qtty_days_on_vacation": 0,
+                                            "value_to_recieve": 0,
+                                            "time_worked_amount": "Working time: ? months, ? days, and ? years ..",
+                                            "created_at": "2024-06-25T18:16:44.499Z"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid Token !"
+                    },
+                    "404": {
+                        "description": "Vacation not found !"
+                    }
+                }
+            }
+        },
+        "/deleteVacation": {
+            "delete": {
+                "tags": ["Vacation"],
+                "summary": "Delete Employee Vacation",
+                "description": "Delete Employee Vacation",
+                "security": [
+                    { "bearerAuth": [] }
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "vacation_id",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Vacation deleted with success !"
+                    },
+                    "401": {
+                        "description": "Invalid Token !"
+                    },
+                    "404": {
+                        "description": "Vacation not found !"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    }
+}

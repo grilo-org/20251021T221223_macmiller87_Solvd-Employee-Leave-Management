@@ -1,0 +1,69 @@
+name: Continuous integration
+
+on:
+  push:
+    paths:
+      - "**.js"
+      - "**.json"
+      - "**.yml"
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+  workflow_dispatch:
+
+jobs:
+  app:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:13
+        env:     
+          POSTGRES_USER: ${{ vars.POSTGRES_USER_LOCAL }}        
+          POSTGRES_PASSWORD: ${{ vars.POSTGRES_PASSWORD_LOCAL }}   
+          POSTGRES_DB: ${{ vars.POSTGRES_DATABASE_LOCAL }}       
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Database and Create Tables
+        run: PGPASSWORD=${{ vars.POSTGRES_PASSWORD_LOCAL }} psql -h ${{ vars.POSTGRES_HOST_LOCAL }} -U ${{ vars.POSTGRES_USER_LOCAL }} -d ${{ vars.POSTGRES_DATABASE_LOCAL }} -f ./src/database/docker-tables/tables.sql
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.15.0
+
+      - name: Install Dependencies
+        run: yarn install
+
+      - name: Run ESLint
+        run: yarn lint
+
+      - name: Run Tests
+        run: yarn test:github:actions
+        env:
+          POSTGRES_HOST_LOCAL: ${{ vars.POSTGRES_HOST_LOCAL }}
+          POSTGRES_PORT: 5432 
+          POSTGRES_DATABASE_LOCAL: ${{ vars.POSTGRES_DATABASE_LOCAL }}
+          POSTGRES_USER_LOCAL: ${{ vars.POSTGRES_USER_LOCAL }}     
+          POSTGRES_PASSWORD_LOCAL: ${{ vars.POSTGRES_PASSWORD_LOCAL }}  
+          SERVER_HOST: ${{ vars.SERVER_HOST }}
+          SERVER_PORT: ${{ vars.SERVER_PORT }}
+          SECRET_TOKEN: ${{ secrets.SECRET_TOKEN }}
+          LOCALE: ${{ vars.LOCALE }} 
+
+
+
+
+
+
+
+

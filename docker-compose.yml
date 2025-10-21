@@ -1,0 +1,54 @@
+version: "3"                      
+
+services:       
+  app:                              
+    build: .
+    container_name: api_solvd_employee_leave_management      
+    restart: always
+    ports:
+      - "8080:8080"                                  
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    env_file:
+      - .env                
+    links:
+      - database                     
+    depends_on:
+      database: 
+        condition: service_healthy
+
+  database:                         
+    image: postgres                 
+    container_name: database_solvd_employee_leave_management
+    user: postgres
+    restart: always                 
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD", "pg_isready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5      
+    environment:                 
+      - POSTGRES_USER=postgres        
+      - POSTGRES_PASSWORD=docker   
+      - POSTGRES_DB=dbdocker         
+    volumes:                        
+      - pgdata:/data/postgres
+      - ./src/database/docker-tables/:/docker-entrypoint-initdb.d/      
+
+  tests:
+    build: .
+    container_name: tests_solvd_employee_leave_management
+    command: npm run test
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    depends_on:
+      database: 
+        condition: service_healthy    
+          
+volumes:                         
+  pgdata:                     
+    driver: local                   
